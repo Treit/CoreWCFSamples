@@ -1,9 +1,26 @@
 using CoreWCF;
+using CoreWCF.Configuration;
+using CoreWCF.Description;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services
+    .AddServiceModelServices()
+    .AddServiceModelMetadata()
+    .AddSingleton<IServiceBehavior, UseRequestHeadersForMetadataAddressBehavior>();
+
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
+app.UseServiceModel(serviceBuilder =>
+{
+    serviceBuilder
+        .AddService<RandomNumberService>()
+        .AddServiceEndpoint<RandomNumberService, IRandomNumber>(new BasicHttpBinding(), "/RandomNumber.svc");
+
+    var serviceMetadataBehavior = app.Services.GetRequiredService<ServiceMetadataBehavior>();
+    serviceMetadataBehavior.HttpGetEnabled = true;
+});
+
+app.MapGet("/", () => "Hello! Please post a SOAP message to me!");
 
 app.Run();
 
