@@ -1,0 +1,2 @@
+# CoreWCFSamples
+Sample CoreWCF projects.
