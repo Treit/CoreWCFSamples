@@ -1,12 +1,7 @@
 ﻿using System.ServiceModel;
 
-if (args.Length == 0)
-{
-    Console.WriteLine("Provide the endpoint address to talk to.");
-    return;
-}
+var uri = args.Length == 0 ? "http://127.0.0.1:5125/RandomNumber.svc" : args[0];
 
-var uri = args[0];
 var binding = new BasicHttpBinding();
 var endpointAddress = new EndpointAddress(uri);
 var client = new RandomNumberClient(binding, endpointAddress);

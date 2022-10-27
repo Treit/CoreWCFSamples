@@ -55,7 +55,11 @@ public class RandomNumberService : IRandomNumber
 
     public RandomNumberResponse Next(RandomNumberRequest request)
     {
-        var num = _random.Next(request.Max);
+        // We could just pull the Max soap header value off of request.Max, but attempting to get
+        // the header from IncomingMessageHeaders illustrates a problem when called via a Python
+        // SOAP client.
+        var max = OperationContext.Current.IncomingMessageHeaders.GetHeader<int>("Max", "http://tempuri.org/");
+        var num = _random.Next(max);
         return new RandomNumberResponse { Result = num };
     }
 }
