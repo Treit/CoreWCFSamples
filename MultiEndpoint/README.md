@@ -76,3 +76,16 @@ System.Reflection.TargetInvocationException
 Inner Exception 1:
 MessageHeaderException: Multiple headers with name 'Max' and namespace 'http://tempuri.org/' found.
 ```
+
+## To reproduce
+In one terminal window:
+```ps
+pushd ./Service
+dotnet run
+```
+
+In another terminal window:
+```ps
+pip install suds
+python ./python_test_client.py
+```
